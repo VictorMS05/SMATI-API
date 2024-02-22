@@ -1,7 +1,7 @@
 'use strict'
 
 //configuracion de la aplicacion
-const puerto = process.env.PORT || 3001;
+const puerto = process.env.PORT || 8080;
 const app = require('./app');
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
