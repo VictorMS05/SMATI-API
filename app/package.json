@@ -1,0 +1,31 @@
+{
+  "name": "smati",
+  "version": "1.0.0",
+  "description": "Sistema de Monitoreo de Alerta Temprana de Inundaciones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "sistema"
+  ],
+  "author": "RemigioSV",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "fast-csv": "^5.0.1",
+    "has": "^1.0.4",
+    "iconv-lite": "^0.6.3",
+    "moment": "^2.30.1",
+    "mysql": "^2.18.1",
+    "negotiator": "^0.6.3",
+    "qs": "^6.11.2",
+    "socket.io": "^4.7.4"
+  }
+}
