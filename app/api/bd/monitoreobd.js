@@ -1,6 +1,19 @@
+require('dotenv').config();
+
 const mysql = require('mysql');
 const { promisify } = require('util');
-const conexionBD = require('./appconfig.json').conexionDB;
+// Configuración de la base de datos
+const fs = require('fs');
+const rawConfig = fs.readFileSync('api/bd/appconfig.json');
+const config = JSON.parse(rawConfig);
+// Reemplazar los marcadores de posición con valores de variables de entorno
+config.conexionDB.host = process.env.DB_HOST;
+config.conexionDB.user = process.env.DB_USER;
+config.conexionDB.password = process.env.DB_PASSWORD;
+config.conexionDB.database = process.env.DB_NAME;
+
+const conexionBD = config.conexionDB;
+// const conexionBD = require('./appconfig.json').conexionDB;
 
 const pool = mysql.createPool(conexionBD);
 pool.getConnection((err, con) => {

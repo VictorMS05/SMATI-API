@@ -1,10 +1,10 @@
 {
     "conexionDB": {
-        "host": "localhost",
+        "host": "${DB_HOST}",
         "port": 3306,
-        "user": "root",
-        "password": "",
-        "database": "monitoreo",
+        "user": "${DB_USER}",
+        "password": "${DB_PASSWORD}",
+        "database": "${DB_NAME}",
         "multipleStatements": true,
         "timezone": "utc"
     }

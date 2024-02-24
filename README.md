@@ -1,2 +1,2 @@
-# sistmonin
-Sistema de monitoreo de inundaciones
+# smati
+Sistema de Monitoreo de Alerta Temprana de inundaciones
