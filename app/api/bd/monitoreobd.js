@@ -8,6 +8,7 @@ const rawConfig = fs.readFileSync('api/bd/appconfig.json');
 const config = JSON.parse(rawConfig);
 // Reemplazar los marcadores de posición con valores de variables de entorno
 config.conexionDB.host = process.env.DB_HOST;
+config.conexionDB.port = process.env.DB_PORT;
 config.conexionDB.user = process.env.DB_USER;
 config.conexionDB.password = process.env.DB_PASSWORD;
 config.conexionDB.database = process.env.DB_NAME;

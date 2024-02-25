@@ -1,2 +1,2 @@
 # SMATI
-Sistema de Monitoreo de Alerta Temprana de inundaciones
+Sistema de Monitoreo de Alerta Temprana de Inundaciones
