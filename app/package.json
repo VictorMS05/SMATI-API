@@ -8,9 +8,16 @@
     "start": "node index.js"
   },
   "keywords": [
-    "sistema"
+    "sistema",
+    "monitoreo",
+    "alerta",
+    "temprana",
+    "inundaciones"
   ],
-  "author": "RemigioSV",
+  "authors": [
+    "RemigioSV",
+    "Víctor MS"
+  ],
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.0.3"

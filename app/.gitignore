@@ -1,3 +1,6 @@
+#! CONFIGURACIÓN DE GITIGNORE PARA LA API DE NODE.JS
+#? Un archivo .gitignore es un archivo que se utiliza para ignorar archivos y directorios que no se deben subir al repositorio de git.
+
 # Created by https://www.toptal.com/developers/gitignore/api/node
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
