@@ -12,9 +12,9 @@ sp: BEGIN
 	SELECT xr.idXbeeRegistro, x.idXbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje
 	FROM xbeeRegistro AS xr
 	INNER JOIN xbee AS x ON xr.idXbee = x.idXbee
-	WHERE (pIdXbeeRegistro IS NULL OR xr.idXbeeRegistro = pIdXbeeRegistro)
-		AND (pIdXbee IS NULL OR xr.idXbee = pIdXbee)
+	WHERE (pIdXbee IS NULL OR xr.idXbee = pIdXbee)
 		AND (pFechaDesde IS NULL OR xr.fecha >= pFechaDesde)
-		AND (pFechaHasta IS NULL OR xr.fecha <= pFechaHasta);
+		AND (pFechaHasta IS NULL OR xr.fecha <= pFechaHasta)
+		AND (pIdXbeeRegistro IS NULL OR xr.idXbeeRegistro = pIdXbeeRegistro);
 END $$
 DELIMITER ;
