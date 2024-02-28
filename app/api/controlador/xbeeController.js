@@ -175,7 +175,7 @@ function registrarXbeeRegistro(req, res) {
         res.status(400).send(respuesta); // Se envía el JSON respuesta al cliente con un código 400 (Bad Request)
         return; // Se termina la ejecución del método
     } else { // Si el idXbee no es nulo, cero o indefinido
-        bd.query('SELECT idXbee FROM xbee WHERE idXbee = ?;', peticion.idXbee) // Se realiza una consulta para obtener el idXbee en caso de que exista un xbee con el mismo idXbee
+        bd.query('SELECT idXbee FROM xbeeRegistro WHERE idXbee = ?;', peticion.idXbee) // Se realiza una consulta para obtener el idXbee en caso de que exista un xbee con el mismo idXbee
             .then(results => { // Si la consulta es exitosa
                 if (results != null && results.length > 0) { // Si hay registros
                     bd.query('UPDATE xbeeRegistro SET fecha = CURRENT_TIMESTAMP(), nivel = ?, mensaje = ? WHERE idXbee = ?;', [peticion.nivel, peticion.mensaje, peticion.idXbee]) // Si ya existe un registro con el mismo idXbee, se actualizan los datos de fecha, nivel y mensaje
