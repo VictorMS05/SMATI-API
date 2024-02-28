@@ -118,7 +118,7 @@ function registrarXbee(req, res) {
                         res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
                     });
             } else { // Si no hay registros
-                bd.query('INSERT INTO xbee(nombre, latitud, longitud, fechaRegistro, fechaActualizacion) VALUES(?, ?, ?, CURRENT_TIMESTAMP(), "");', [peticion.nombre, peticion.latitud, peticion.longitud]) // Si no existe un xbee con el mismo nombre, se inserta un nuevo registro
+                bd.query('INSERT INTO xbee(nombre, latitud, longitud, fechaRegistro, fechaActualizacion) VALUES(?, ?, ?, CURRENT_TIMESTAMP(), NULL);', [peticion.nombre, peticion.latitud, peticion.longitud]) // Si no existe un xbee con el mismo nombre, se inserta un nuevo registro
                     .then(results => { // Si la inserción es exitosa
                         if (results != null && results.affectedRows > 0) { // Si se afectó al menos un registro
                             respuesta.mensaje = "Registro exitoso"; // Se asigna a la clave "mensaje" un mensaje que describa la inserción exitosa en el JSON respuesta
