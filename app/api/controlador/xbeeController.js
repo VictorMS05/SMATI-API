@@ -166,7 +166,7 @@ function registrarXbee(req, res) {
 function registrarXbeeRegistro(req, res) {
     let respuesta = new Respuesta(); // Se crea un nuevo JSON de respuesta a partir de la configuración de respuesta.js
     let peticion = req.body; // Se crea una variable para almacenar los parámetros del body que manda el cliente en la petición
-    let idXbeeRegistro = 0;
+    // let idXbeeRegistro = 0;
 
     //* Consulta a la base de datos sin uso del procedimiento almacenado registrarXbeeRegistro
     if (peticion.idXbee == 0 || peticion.idXbee == null || peticion.idXbee == undefined) { // Si el idXbee es nulo, cero o indefinido
@@ -178,7 +178,38 @@ function registrarXbeeRegistro(req, res) {
         bd.query('SELECT idXbee FROM xbeeRegistro WHERE idXbee = ?;', peticion.idXbee) // Se realiza una consulta para obtener el idXbee en caso de que exista un xbee con el mismo idXbee
             .then(results => { // Si la consulta es exitosa
                 if (results != null && results.length > 0) { // Si hay registros
-                    bd.query('UPDATE xbeeRegistro SET fecha = CURRENT_TIMESTAMP(), nivel = ?, mensaje = ? WHERE idXbee = ?;', [peticion.nivel, peticion.mensaje, peticion.idXbee]) // Si ya existe un registro con el mismo idXbee, se actualizan los datos de fecha, nivel y mensaje
+                    bd.query('SELECT * FROM xbeeRegistro WHERE idXbee = ?;', results[0].idXbee) //historialRegistros<-Tabla
+                        .then(results => {
+                            if(results != null && results.length > 0){
+                                bd.query('INSERT INTO historialRegistros(idXbee, fecha, nivel, mensaje) VALUES(?, CURRENT_TIMESTAMP(), ?, ?);', [results[0].idXbee, results[0].nivel, results[0].mensaje])
+                                    .then(results =>{
+                                        if(results != null && results.affectedRows > 0){
+                                            respuesta.mensaje = "Migración del registro al historial exitosa"
+                                            res.status(201).send(respuesta);
+                                        } else {
+                                            respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
+                                            respuesta.mensaje = "No se pudo migrar el nuevo registro"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
+                                            res.status(400).send(respuesta); // Se envía el JSON respuesta al cliente con un código 400 (Bad Request)
+                                        }
+                                    })
+                                    .catch(error => { // Si la actualización no es exitosa
+                                        console.log(error);
+                                        respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
+                                        respuesta.mensaje = "Ocurrió un error no controlado"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
+                                        res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
+                                    });
+                            } else {
+                                respuesta.mensaje = "No se encontraron datos en xbeeRegistros";
+                                res.status(200).send(respuesta);
+                            }
+                        })
+                        .catch(error => { // Si la actualización no es exitosa
+                            console.log(error);
+                            respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
+                            respuesta.mensaje = "Ocurrió un error no controlado en la obtención de datos de la tabla xbeeRegistros"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
+                            res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
+                        });
+                    bd.query('UPDATE xbeeRegistro SET fecha = CURRENT_TIMESTAMP(), nivel = ?, mensaje = ? WHERE idXbee = ?;', [results[0].nivel, results[0].mensaje, results[0].idXbee]) // Si ya existe un registro con el mismo idXbee, se actualizan los datos de fecha, nivel y mensaje
                         .then(results => { // Si la actualización es exitosa
                             if (results != null && results.affectedRows > 0) { // Si se afectó al menos un registro
                                 respuesta.mensaje = "Actualización exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la actualización exitosa en el JSON respuesta
