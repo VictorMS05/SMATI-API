@@ -180,36 +180,28 @@ function registrarXbeeRegistro(req, res) {
                 if (results != null && results.length > 0) { // Si hay registros
                     bd.query('SELECT * FROM xbeeRegistro WHERE idXbee = ?;', results[0].idXbee) //historialRegistros<-Tabla
                         .then(results => {
-                            if(results != null && results.length > 0){
-                                bd.query('INSERT INTO historialRegistros(idXbee, fecha, nivel, mensaje) VALUES(?, CURRENT_TIMESTAMP(), ?, ?);', [results[0].idXbee, results[0].nivel, results[0].mensaje])
-                                    .then(results =>{
-                                        if(results != null && results.affectedRows > 0){
-                                            respuesta.mensaje = "Migración del registro al historial exitosa"
-                                            res.status(201).send(respuesta);
+                            if (results != null && results.length > 0) {
+                                bd.query('INSERT INTO historialRegistro(idXbee, fecha, nivel, mensaje) VALUES(?, CURRENT_TIMESTAMP(), ?, ?);', [results[0].idXbee, results[0].nivel, results[0].mensaje])
+                                    .then(results => {
+                                        if (results != null && results.affectedRows > 0) {
+                                            console.log("Migración del registro al historial exitosa");
                                         } else {
-                                            respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
-                                            respuesta.mensaje = "No se pudo migrar el nuevo registro"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
-                                            res.status(400).send(respuesta); // Se envía el JSON respuesta al cliente con un código 400 (Bad Request)
+                                            console.log("No se pudo migrar el nuevo registro");
                                         }
                                     })
-                                    .catch(error => { // Si la actualización no es exitosa
+                                    .catch(error => {
                                         console.log(error);
-                                        respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
-                                        respuesta.mensaje = "Ocurrió un error no controlado"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
-                                        res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
+                                        console.log("Ocurrió un error no controlado por culpa de Fer");
                                     });
                             } else {
-                                respuesta.mensaje = "No se encontraron datos en xbeeRegistros";
-                                res.status(200).send(respuesta);
+                                console.log("No se encontraron datos en xbeeRegistros");
                             }
                         })
-                        .catch(error => { // Si la actualización no es exitosa
+                        .catch(error => {
                             console.log(error);
-                            respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
-                            respuesta.mensaje = "Ocurrió un error no controlado en la obtención de datos de la tabla xbeeRegistros"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
-                            res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
+                            console.log("Ocurrió un error no controlado en la obtención de datos de la tabla xbeeRegistros");
                         });
-                    bd.query('UPDATE xbeeRegistro SET fecha = CURRENT_TIMESTAMP(), nivel = ?, mensaje = ? WHERE idXbee = ?;', [results[0].nivel, results[0].mensaje, results[0].idXbee]) // Si ya existe un registro con el mismo idXbee, se actualizan los datos de fecha, nivel y mensaje
+                    bd.query('UPDATE xbeeRegistro SET fecha = CURRENT_TIMESTAMP(), nivel = ?, mensaje = ? WHERE idXbee = ?;', [peticion.nivel, peticion.mensaje, results[0].idXbee]) // Si ya existe un registro con el mismo idXbee, se actualizan los datos de fecha, nivel y mensaje
                         .then(results => { // Si la actualización es exitosa
                             if (results != null && results.affectedRows > 0) { // Si se afectó al menos un registro
                                 respuesta.mensaje = "Actualización exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la actualización exitosa en el JSON respuesta
@@ -249,7 +241,7 @@ function registrarXbeeRegistro(req, res) {
             .catch(error => { // Si la consulta no es exitosa
                 console.log(error);
                 respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
-                respuesta.mensaje = "Ocurrió un error no controlado"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
+                respuesta.mensaje = "Ocurrió un error no controlado "; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
                 res.status(500).send(respuesta); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
             });
     }
