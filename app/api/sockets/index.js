@@ -12,7 +12,7 @@ function escucharSockets(ioSocket) { // Se recibe el socket del servidor
 
 		ioSocket.on('connection', socketCliente => { // Se escucha el evento de conexión con un cliente
 			socketCliente.on('disconnect', () => { // Se escucha el evento de desconexión con un cliente
-				console.log('Cliente desconectado');
+				// console.log('Cliente desconectado');
 			});
 		});
 	}

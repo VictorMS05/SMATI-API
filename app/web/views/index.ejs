@@ -1,5 +1,5 @@
-<!--! CONFIGURACIÓN DE LA PÁGINA WEB GENERADA AUTOMATICAMENTE POR EJS-->
-
+<%- include("plantillas/cabecera") %>
+	<%- include("plantillas/menu") %>
 		<style type="text/css">
 			.card-body {
 				font-size: 1rem;
@@ -55,6 +55,7 @@
 				</div>
 			</div>
 		</div>
+		<%- include("plantillas/scripts") %>
 			<script src="./chart/chart.v3.9.1.min.js"></script>
 			<script src="./socket.io-client/socket.io.min.js"></script>
 			<script type="text/javascript">
@@ -69,7 +70,7 @@
 						let existe = false;
 						this.datos = [];
 						this.tiempos = [];
-						let topRegistros = 20;
+						let topRegistros = 50;
 
 						if (this.registros != null && this.registros.length > topRegistros) {
 							for (let i = 0; i < this.registros.length - topRegistros; i++) {
@@ -120,6 +121,7 @@
 						//Generar los datos por Xbee
 						if (xbeeNivel != null) {
 							for (let i = 0; i < xbeeNivel.length; i++) {
+								console.log("Jorge:" + xbeeNivel[i]);
 								let xbeeDatos = {
 									backgroundColor: 'rgb(255, 99, 132)',
 									borderColor: 'rgb(255, 99, 130)',
@@ -127,9 +129,12 @@
 								};
 
 								for (let j = 0; j < xbeeNivel[i].length; j++) {
+									console.log("Fer:" + xbeeNivel[i][j]);
 									if (j == 0) {
+										console.log("Nombre:" + xbeeNivel[i][0]);
 										xbeeDatos.label = xbeeNivel[i][0];
 									} else {
+										console.log("Dato:" + xbeeNivel[i][j]);
 										xbeeDatos.data.push(xbeeNivel[i][j]);
 									}
 								}
@@ -238,3 +243,4 @@
 					}
 				}
 			</script>
+			<%- include("plantillas/piepagina") %>

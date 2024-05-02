@@ -6,11 +6,14 @@
 var router = require('express').Router(); // Se llama al enrutador de la biblioteca Express
 var xbeeRouter = require('../controlador/xbeeController'); // Se llama a la configuración de los métodos HTTP de la API
 
-//* GET
+//* <------------------ GET ------------------>
+
 router.get('/', xbeeRouter.obtenerXbees); // Se define la ruta para obtener los dispositivos Xbee y se llama al método correspondiente
+router.get('/niveles_recientes/', xbeeRouter.consultarNivelesRecientes); // Se define la ruta para obtener un dispositivo Xbee por su ID y se llama al método correspondiente
 router.get('/registros', xbeeRouter.obtenerXbeeRegistros); // Se define la ruta para obtener los registros de los dispositivos Xbee y se llama al método correspondiente
 
-//* POST
+//* <------------------ POST ------------------>
+
 router.post('/', xbeeRouter.registrarXbee); // Se define la ruta para registrar un dispositivo Xbee y se llama al método correspondiente
 router.post('/registro', xbeeRouter.registrarXbeeRegistro); // Se define la ruta para registrar un registro de un dispositivo Xbee y se llama al método correspondiente
 

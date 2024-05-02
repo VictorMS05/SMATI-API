@@ -8,3 +8,14 @@ CREATE TABLE xbeeRegistro
     mensaje VARCHAR(200),
     PRIMARY KEY(idXbeeRegistro)
 );
+
+-- * <---------- PostgreSQL ---------->
+CREATE TABLE xbee_registro
+(
+    id_xbee_registro SERIAL PRIMARY KEY,
+    id_xbee INTEGER NOT NULL,
+    fecha TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nivel INTEGER NOT NULL,
+    mensaje VARCHAR(25) NOT NULL,
+    FOREIGN KEY (id_xbee) REFERENCES xbee(id_xbee)
+);
