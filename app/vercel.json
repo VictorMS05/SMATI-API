@@ -1,6 +1,6 @@
 {
     "name": "SMATI",
-    "version": "1",
+    "version": 1,
     "builds": [
         {
             "src": "/api/bd/*.js",
