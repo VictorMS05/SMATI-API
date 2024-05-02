@@ -3,19 +3,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "/api/bd/*.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "/api/controlador/*.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "/api/modelos/*.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "/api/rutas/*.js",
+            "src": "./index.js",
             "use": "@vercel/node"
         }
     ],
@@ -26,7 +14,7 @@
                 "GET",
                 "POST"
             ],
-            "dest": "/api/rutas/xbee.js"
+            "dest": "/"
         }
     ]
 }
