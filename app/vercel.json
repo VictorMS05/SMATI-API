@@ -1,0 +1,16 @@
+{
+    "name": "SMATI",
+    "version": "1",
+    "description": "Sistema de Monitoreo de Alerta Temprana para Inundaciones",
+    "build": [
+        {
+            "src": "index.js",
+            "command": "npm run start"
+        }
+    ],
+    "routes": {
+        "src": "/api/(.*)",
+        "methods": ["GET", "POST"],
+        "dest": "index.js"
+    }
+}
