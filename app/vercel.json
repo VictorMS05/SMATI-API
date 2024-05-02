@@ -1,10 +1,24 @@
 {
     "name": "SMATI",
     "version": "1",
-    "build": {
-        "src": "index.js",
-        "command": "npm run start"
-    },
+    "builds": [
+        {
+            "src": "/api/bd/*.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "/api/controlador/*.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "/api/modelos/*.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "/api/rutas/*.js",
+            "use": "@vercel/node"
+        }
+    ],
     "routes": [
         {
             "src": "/api/xbee/(.*)",
@@ -12,7 +26,7 @@
                 "GET",
                 "POST"
             ],
-            "dest": "index.js"
+            "dest": "/api/rutas/xbee.js"
         }
     ]
 }
