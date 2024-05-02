@@ -1,16 +1,17 @@
 {
     "name": "SMATI",
     "version": "1",
-    "build": [
-        {
-            "src": "index.js",
-            "command": "npm run start"
-        }
-    ],
+    "build": {
+        "src": "index.js",
+        "command": "npm run start"
+    },
     "routes": [
         {
             "src": "/api/xbee/(.*)",
-            "methods": ["GET", "POST"],
+            "methods": [
+                "GET",
+                "POST"
+            ],
             "dest": "index.js"
         }
     ]
