@@ -5,6 +5,14 @@
         {
             "src": "./index.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "./web/views/index.ejs",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "./web/views/xbees/index.ejs",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
