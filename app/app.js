@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, 'web', 'views')); // Se configura la ruta 
 app.use(express.static(path.join(__dirname, 'web', 'public'), { redirect: false })); // Se configura la ruta de los archivos estáticos
 
 //* Configuracion de rutas web
-app.use(require('./web/rutas')); // Se llama al enrutador de la vista index
+app.use(require('./web/routes')); // Se llama al enrutador de la vista index
 
 //* Definición rutas de la API
 app.use('/api', require('./api/rutas')) // Se define la ruta raiz de la API para usar las rutas de la API

@@ -135,7 +135,8 @@ function registrarXbee(req, res) {
                     .then(results => { // Si la actualización es exitosa
                         if (results.rowCount > 0) { // Si se afectó al menos un registro
                             respuesta.mensaje = "Actualización exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la actualización exitosa en el JSON respuesta
-                            res.status(202).send(respuesta); // Se envía el JSON respuesta al cliente con un código 202 (Accepted)
+                            respuesta.id_xbee = results.rows[0].id_xbee; // Se asigna a la clave "id_xbee" el valor del idXbee en el JSON respuesta
+                            res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 202 (Accepted)
                         } else { // Si no se afectó ningún registro
                             respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
                             respuesta.mensaje = "No se pudo actualizar el registro"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
@@ -152,8 +153,13 @@ function registrarXbee(req, res) {
                 bd.query('INSERT INTO xbee(nombre, latitud, longitud, fecha_registro, fecha_actualizacion) VALUES($1, $2, $3, CURRENT_TIMESTAMP, NULL);', [peticion.nombre, peticion.latitud, peticion.longitud]) // Si no existe un xbee con el mismo nombre, se inserta un nuevo registro
                     .then(results => { // Si la inserción es exitosa
                         if (results.rowCount > 0) { // Si se afectó al menos un registro
-                            respuesta.mensaje = "Registro exitoso"; // Se asigna a la clave "mensaje" un mensaje que describa la inserción exitosa en el JSON respuesta
-                            res.status(201).send(respuesta); // Se envía el JSON respuesta al cliente con un código 201 (Created)
+                            bd.query('SELECT id_xbee FROM xbee WHERE nombre = $1;', [peticion.nombre]) // Se realiza una consulta para obtener el idXbee del nuevo xbee
+                                .then(results => { // Si la consulta es exitosa
+                                    respuesta.mensaje = "Registro exitoso"; // Se asigna a la clave "mensaje" un mensaje que describa la inserción exitosa en el JSON respuesta
+                                    respuesta.id_xbee = results.rows[0].id_xbee; // Se asigna a la clave "id_xbee" el valor del idXbee en el JSON respuesta
+                                    res.status(201).send(respuesta); // Se envía el JSON respuesta al cliente con un código 201 (Created)
+                                }
+                                )
                         } else {
                             respuesta.error = true; // Se cambia el valor de la clave "error" a verdadero en el JSON respuesta
                             respuesta.mensaje = "No se pudo registrar el nuevo xbee"; // Se asigna a la clave "mensaje" un mensaje que describa el error en el JSON respuesta
