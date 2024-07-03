@@ -42,20 +42,16 @@ function obtenerXbees(req, res) {
 function consultarNivelesRecientes(req, res) {
     let respuesta = new Respuesta(); // Se crea un nuevo JSON de respuesta a partir de la configuración de respuesta.js
     let arreglo = []; // Se crea un arreglo vacío para almacenar los registros obtenidos
+    let parametro_ruta = req.params; // Se crea una variable para almacenar el parámetro de la ruta que manda el cliente en la petición
     // Se realiza una consulta a la base de datos para obtener los 2 registros más recientes de la tabla xbee_registro
-    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON xr.id_xbee = x.id_xbee ORDER BY xr.fecha DESC, x.id_xbee ASC LIMIT 2;')
+    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON (xr.id_xbee = x.id_xbee AND xr.id_xbee = $1 AND x.id_xbee = $1) ORDER BY xr.fecha DESC, x.id_xbee ASC LIMIT 1;', [parametro_ruta])
         .then(results => { // Si la consulta es exitosa
             if (results.rowCount > 0) { // Si hay registros
-                arreglo.push(results.rows[0]); // Se añade el primer registro al arreglo
-                if (results.rows[1] != null && results.rows[1].id_xbee != results.rows[0].id_xbee) { // Si el segundo registro es de un xbee diferente al primero
-                    arreglo.push(results.rows[1]); // Se añade el segundo registro al arreglo
-                }
-                // Se crea la clave "niveles" en el JSON respuesta y se le asigna el valor del arreglo
-                respuesta.niveles = arreglo;
+                respuesta.nivel = results.rows; // Se crea la clave "nivel" en el JSON respuesta y se le asigna el valor de los registros obtenidos en un JSON anidado
                 respuesta.mensaje = "Consulta exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la consulta exitosa en el JSON respuesta
                 res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 200 (OK)
             } else { // Si no hay registros
-                respuesta.mensaje = "No hay registros de niveles"; // Se asigna a la clave "mensaje" un mensaje que describa que no hay registros en el JSON respuesta
+                respuesta.mensaje = "No se encontró un registro reciente del nivel"; // Se asigna a la clave "mensaje" un mensaje que describa que no hay registros en el JSON respuesta
                 res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 200 (OK)
             }
         })
