@@ -39,18 +39,19 @@ function obtenerXbees(req, res) {
 //* <---------- Nivel ---------->
 
 //* <----- Recientes ----->
-function consultarNivelesRecientes(req, res) {
+function consultarNivelReciente(req, res) {
     let respuesta = new Respuesta(); // Se crea un nuevo JSON de respuesta a partir de la configuración de respuesta.js
     let parametro_ruta = req.params.id; // Se crea una variable para almacenar el parámetro de la ruta que manda el cliente en la petición
     // Se realiza una consulta a la base de datos para obtener los 2 registros más recientes de la tabla xbee_registro
-    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON (xr.id_xbee = x.id_xbee AND xr.id_xbee = $1 AND x.id_xbee = $1) ORDER BY xr.fecha DESC, x.id_xbee ASC LIMIT 1;', [parametro_ruta])
+    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON xr.id_xbee = x.id_xbee WHERE xr.id_xbee = $1 AND xr.fecha >= NOW() - INTERVAL "2 seconds" ORDER BY xr.fecha DESC LIMIT 1;', [parametro_ruta])
         .then(results => { // Si la consulta es exitosa
             if (results.rowCount > 0) { // Si hay registros
-                respuesta.nivel = results.rows; // Se crea la clave "nivel" en el JSON respuesta y se le asigna el valor de los registros obtenidos en un JSON anidado
                 respuesta.mensaje = "Consulta exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la consulta exitosa en el JSON respuesta
+                respuesta.registro = results.rows; // Se crea la clave "registro" en el JSON respuesta y se le asigna el valor del registro obtenido en un JSON anidado
                 res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 200 (OK)
             } else { // Si no hay registros
                 respuesta.mensaje = "No se encontró un registro reciente del nivel"; // Se asigna a la clave "mensaje" un mensaje que describa que no hay registros en el JSON respuesta
+                respuesta.registro = results.rows; // Se asigna a la clave "registro" el valor nulo en el JSON respuesta
                 res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 200 (OK)
             }
         })
@@ -216,7 +217,7 @@ function registrarXbeeRegistro(req, res) {
 module.exports = { // Se exportan los métodos para ser llamados en las rutas
     //GET
     obtenerXbees,
-    consultarNivelesRecientes,
+    consultarNivelReciente,
     obtenerXbeeRegistros,
     //POST
     registrarXbee,

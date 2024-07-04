@@ -9,7 +9,7 @@ var xbeeRouter = require('../controlador/xbeeController'); // Se llama a la conf
 //* <------------------ GET ------------------>
 
 router.get('/', xbeeRouter.obtenerXbees); // Se define la ruta para obtener los dispositivos Xbee y se llama al método correspondiente
-router.get('/niveles_recientes/:id', xbeeRouter.consultarNivelesRecientes); // Se define la ruta para obtener un registro reciente de los dispositivos Xbee y se llama al método correspondiente
+router.get('/nivel_reciente/:id', xbeeRouter.consultarNivelReciente); // Se define la ruta para obtener un registro reciente de los dispositivos Xbee y se llama al método correspondiente
 router.get('/registros', xbeeRouter.obtenerXbeeRegistros); // Se define la ruta para obtener los registros de los dispositivos Xbee y se llama al método correspondiente
 
 //* <------------------ POST ------------------>
