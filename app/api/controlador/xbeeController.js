@@ -43,7 +43,7 @@ function consultarNivelReciente(req, res) {
     let respuesta = new Respuesta(); // Se crea un nuevo JSON de respuesta a partir de la configuración de respuesta.js
     let parametro_ruta = req.params.id; // Se crea una variable para almacenar el parámetro de la ruta que manda el cliente en la petición
     // Se realiza una consulta a la base de datos para obtener los 2 registros más recientes de la tabla xbee_registro
-    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON xr.id_xbee = x.id_xbee WHERE xr.id_xbee = $1 AND xr.fecha >= NOW() - INTERVAL "2 seconds" ORDER BY xr.fecha DESC LIMIT 1;', [parametro_ruta])
+    bd.query('SELECT x.id_xbee, x.nombre, xr.fecha, xr.nivel, xr.mensaje FROM xbee_registro AS xr INNER JOIN xbee AS x ON xr.id_xbee = x.id_xbee WHERE xr.id_xbee = $1 AND xr.fecha >= NOW() - INTERVAL \'2 seconds\' ORDER BY xr.fecha DESC LIMIT 1;', [parametro_ruta])
         .then(results => { // Si la consulta es exitosa
             if (results.rowCount > 0) { // Si hay registros
                 respuesta.mensaje = "Consulta exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la consulta exitosa en el JSON respuesta
