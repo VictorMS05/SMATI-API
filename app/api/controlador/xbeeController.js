@@ -47,7 +47,7 @@ function consultarNivelReciente(req, res) {
         .then(results => { // Si la consulta es exitosa
             if (results.rowCount > 0) { // Si hay registros
                 respuesta.mensaje = "Consulta exitosa"; // Se asigna a la clave "mensaje" un mensaje que describa la consulta exitosa en el JSON respuesta
-                respuesta.registro = results.rows; // Se crea la clave "registro" en el JSON respuesta y se le asigna el valor del registro obtenido en un JSON anidado
+                respuesta.registro = results.rows[0]; // Se crea la clave "registro" en el JSON respuesta y se le asigna el valor del registro obtenido en un JSON anidado
                 res.status(200).send(respuesta); // Se envía el JSON respuesta al cliente con un código 200 (OK)
             } else { // Si no hay registros
                 respuesta.mensaje = "No se encontró un registro reciente del nivel"; // Se asigna a la clave "mensaje" un mensaje que describa que no hay registros en el JSON respuesta
