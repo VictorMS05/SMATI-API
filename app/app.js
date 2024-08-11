@@ -1,18 +1,24 @@
+//! CONFIGURACIÓN DE LA APLICACIÓN EXPRESS
+//? Archivo de configuración de la aplicación Express que inicializa la aplicación, configura el manejo de datos, las cabeceras HTTP y las rutas de la página web y la API
+
 'use strict' // Uso del modo estricto de JavaScript
 
-var express = require('express'); // Se llama al módulo de la biblioteca Express
-var bodyParse = require('body-parser'); // Se llama al módulo para el manejo de datos en formato JSON
-var path = require('path'); // Se llama al módulo para el manejo de rutas de archivos
-const res = require('express/lib/response'); // Se llama al módulo para el manejo de respuestas
+import express, { static as expressStatic } from 'express'; // Se llama al módulo de la biblioteca Express
+import pkg from 'body-parser'; // Se llama al módulo para el manejo de datos en formato JSON
+import { join, dirname } from 'path'; // Se llama a las funciones join y dirname de la biblioteca path
+import { fileURLToPath } from 'url'; // Se llama a la función fileURLToPath de la biblioteca url
+import rutas_web from './web/routes/index.js'; // Se llama al módulo de las rutas de la vista index
+import rutas_api from './api/routes/index.js'; // Se llama al módulo de las rutas de la API
 
-//* Inicar la aplicacion
-var app = express(); // Se crea una instancia de la aplicación Express
+//* <------------------- Configuración general ------------------->
 
-//* Configuración de los render
-app.use(bodyParse.urlencoded({ limit: '5mb', extended: true })); // Se configura el manejo de datos en formato URL encoded
-app.use(bodyParse.json()); // Se configura el manejo de datos en formato JSON
+let app = express(); // Se crea una instancia de la aplicación Express
+const { urlencoded, json } = pkg; // Se obtienen las funciones urlencoded y json de la biblioteca body-parser
+const __filename = fileURLToPath(import.meta.url); // Se obtiene la ruta del archivo actual
+const __dirname = dirname(__filename); // Se obtiene el directorio del archivo actual
 
-//* Configuracion de cabeceras HTTP
+app.use(urlencoded({ limit: '5mb', extended: true })); // Se configura el manejo de datos en formato URL encoded
+app.use(json()); // Se configura el manejo de datos en formato JSON
 app.use((req, res, next) => { // Se configuran las cabeceras HTTP para permitir el acceso a la API desde cualquier origen
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-Width, Content-Type, Accept, Access-Allow-Request-Method');
@@ -21,28 +27,26 @@ app.use((req, res, next) => { // Se configuran las cabeceras HTTP para permitir 
     next();
 });
 
-//* Configuracion motor de vista o plantillas
+//* <------------------- Configuración web ------------------->
+
 app.set('view engine', 'ejs'); // Se configura el motor de plantillas para la vista index
-app.set('views', path.join(__dirname, 'web', 'views')); // Se configura la ruta de las vistas
+app.set('views', join(__dirname, 'web', 'views')); // Se configura la ruta de las vistas
+app.use(expressStatic(join(__dirname, 'web', 'public'), { redirect: false })); // Se configura la ruta de los archivos estáticos
 
-//* Configuracion de archivos estaticos
-app.use(express.static(path.join(__dirname, 'web', 'public'), { redirect: false })); // Se configura la ruta de los archivos estáticos
+//* <------------------- Rutas ------------------->
 
-//* Configuracion de rutas web
-app.use(require('./web/routes')); // Se llama al enrutador de la vista index
-
-//* Definición rutas de la API
-app.use('/api', require('./api/rutas')) // Se define la ruta raiz de la API para usar las rutas de la API
-app.use('/api/*', (req, res) => {
-    res.status(200).send({
-        mensaje: "La petición no es válida, pongase en contacto con el administrador." // Se envía un mensaje de error si la petición no es válida
+app.use(rutas_web); // Se define la ruta raiz ('') para usar las rutas de la página web
+app.use('/api', rutas_api) // Se define la ruta raiz ('/api') para usar las rutas de la API
+app.use('/api/*', (req, res) => { // Se define el manejo de errores 404 en la API
+    console.log('GET ' + req.originalUrl + ' HTTPS/1.1 404 Not Found');
+    res.status(404).send({
+        error: true,
+        mensaje: "Página no encontrada. La URL solicitada no fue encontrada en el servidor."
     });
 });
-
-//* Otras ruta
-app.get('*', (req, res, next) => { // Se define la ruta inicial de la API para la vista index
-    res.status(200).send('<h1>¡Lo siento no encontré una respuesta para su petición!</h1>'); // Se envía un mensaje de error si la petición no es válida
-    // res.sendFile(path.resolve(path.join('web', 'views', 'index.html')));
+app.get('*', (req, res, next) => { // Se define el manejo de errores 404 en la página web
+    console.log('GET ' + req.originalUrl + ' HTTPS/1.1 404 Not Found');
+    res.redirect(308, '/'); // Se redirecciona a la página principal
 });
 
-module.exports = app; // Exportar la configuración de la aplicación para su uso en otros archivos
+export default app; // Exportar la configuración de la aplicación para su uso en otros archivos
