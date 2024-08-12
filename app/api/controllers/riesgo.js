@@ -24,7 +24,6 @@ function consultar_riesgo(req, res) {
             } else {
                 console.log('GET /api/riesgo HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontró un registro de riesgo";
-                json.riesgo = results.rows; // Se crea la clave "riesgo" y se asigna el JSON Response vacio
                 res.status(200).send(json);
             }
         })

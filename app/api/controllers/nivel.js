@@ -45,7 +45,6 @@ function consultar_nivel(req, res) {
             } else {
                 console.log('GET /api/nivel/' + id + ' HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontró un registro del nivel";
-                json.nivel = results.rows; // Se crea la clave "nivel" y se asigna el JSON Response vacio
                 res.status(200).send(json);
             }
         })
