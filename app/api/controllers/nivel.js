@@ -11,6 +11,7 @@ function consultar_nivel(req, res) {
     const id = req.params.id; // Se crea una variable para almacenar el parámetro de la ruta que manda el cliente en la url
     const periodo_de_tiempo = req.query.periodo_de_tiempo; // Se crea una variable para almacenar el parámetro de la consulta que manda el cliente en la url
     let consulta_sql = ''; // Se crea una variable para almacenar la consulta SQL
+    let parametro_consulta = '?periodo_de_tiempo=' + periodo_de_tiempo; // Se crea una variable para almacenar el parámetro de la consulta
     let json = new json_response(); // Se crea un objeto de la clase JSON Response
     switch (periodo_de_tiempo) {
         case 'reciente':
@@ -33,18 +34,20 @@ function consultar_nivel(req, res) {
             break;
         default:
             consulta_sql = 'SELECT x.nombre, n.fecha, n.nivel, r.altura, r.mensaje, r.indicacion FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee INNER JOIN riesgo AS r ON n.nivel = r.nivel WHERE n.id_xbee = $1';
+            parametro_consulta = '';
     }
     // Se realiza una consulta a la base de datos para obtener el registro del nivel del dispositivo Xbee
     bd.query(consulta_sql, [id])
         .then(results => {
             if (results.rowCount > 0) { // Si hay registros
-                console.log('GET /api/nivel/' + id + ' HTTPS/1.1 200 OK');
+                console.log('GET /api/nivel/' + id + parametro_consulta + ' HTTPS/1.1 200 OK');
                 json.mensaje = "Consulta exitosa";
                 json.nivel = results.rows; // Se crea la clave "nivel" en el JSON Response y se asigna el valor de los registros obtenidos
                 res.status(200).send(json); // Se envía el JSON Response al cliente con un código 200 (OK)
             } else {
                 console.log('GET /api/nivel/' + id + ' HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontró un registro del nivel";
+                json.nivel = results.rows;
                 res.status(200).send(json);
             }
         })

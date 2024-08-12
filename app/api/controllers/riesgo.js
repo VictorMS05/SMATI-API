@@ -9,21 +9,24 @@ import json_response from '../models/json_response.js';  // Se llama a la clase 
 
 function consultar_riesgo(req, res) {
     let consulta_sql = 'SELECT * FROM riesgo'; // Se crea una variable para almacenar la consulta SQL
+    let parametro_consulta = ''; // Se crea una variable para almacenar el parámetro de la consulta
     let json = new json_response(); // Se crea un objeto de la clase JSON Response
     if (req.query.nivel) { // Si el cliente envía un parámetro de consulta en la url
         consulta_sql = 'SELECT * FROM riesgo WHERE nivel = ' + req.query.nivel + ';'; // Se asigna la consulta SQL con el parámetro de consulta
+        parametro_consulta = '?nivel=' + req.query.nivel; // Se asigna el parámetro de consulta
     }
     // Se realiza una consulta a la base de datos para obtener los registros de los riesgos
     bd.query(consulta_sql)
         .then(results => {
             if (results.rowCount > 0) { // Si hay registros
-                console.log('GET /api/riesgo HTTPS/1.1 200 OK');
+                console.log('GET /api/riesgo' + parametro_consulta + ' HTTPS/1.1 200 OK');
                 json.mensaje = "Consulta exitosa";
                 json.riesgo = results.rows; // Se crea la clave "riesgo" en el JSON Response y se asigna el valor de los registros obtenidos
                 res.status(200).send(json); // Se envía el JSON Response al cliente con un código 200 (OK)
             } else {
                 console.log('GET /api/riesgo HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontró un registro de riesgo";
+                json.riesgo = results.rows;
                 res.status(200).send(json);
             }
         })
