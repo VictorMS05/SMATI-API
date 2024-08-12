@@ -17,19 +17,19 @@ function consultar_riesgo(req, res) {
     bd.query(consulta_sql)
         .then(results => {
             if (results.rowCount > 0) { // Si hay registros
-                console.log('GET /riesgo HTTPS/1.1 200 OK');
+                console.log('GET /api/riesgo HTTPS/1.1 200 OK');
                 json.mensaje = "Consulta exitosa";
                 json.riesgo = results.rows; // Se crea la clave "riesgo" en el JSON Response y se asigna el valor de los registros obtenidos
                 res.status(200).send(json); // Se envía el JSON Response al cliente con un código 200 (OK)
             } else {
-                console.log('GET /riesgo HTTPS/1.1 200 OK');
+                console.log('GET /api/riesgo HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontró un registro de riesgo";
                 json.riesgo = results.rows; // Se crea la clave "riesgo" y se asigna el JSON Response vacio
                 res.status(200).send(json);
             }
         })
         .catch(error => {
-            console.log('GET /riesgo HTTPS/1.1 500 Internal Server Error');
+            console.log('GET /api/riesgo HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
@@ -45,19 +45,19 @@ function insertar_riesgo(req, res) {
     bd.query('INSERT INTO riesgo(nivel, altura, mensaje, indicacion) VALUES($1, $2, $3, $4) RETURNING *;', [body.nivel, body.altura, body.mensaje, body.indicacion])
         .then(results => {
             if (results.rowCount > 0) { // Si se insertó el registro
-                console.log('POST /riesgo HTTPS/1.1 201 Created');
+                console.log('POST /api/riesgo HTTPS/1.1 201 Created');
                 json.mensaje = "El riesgo se ha insertado exitosamente";
                 json.riesgo = results.rows;
                 res.status(201).send(json); // Se envía el JSON Response al cliente con un código 201 (Created)
             } else {
-                console.log('POST /riesgo HTTPS/1.1 400 Bad Request');
+                console.log('POST /api/riesgo HTTPS/1.1 400 Bad Request');
                 json.error = true;
                 json.mensaje = "Hubo un problema al registrar el riesgo";
                 res.status(400).send(json); // Se envía el JSON respuesta al cliente con un código 400 (Bad Request)
             }
         })
         .catch(error => {
-            console.log('POST /riesgo HTTPS/1.1 500 Internal Server Error');
+            console.log('POST /api/riesgo HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json);
@@ -74,19 +74,19 @@ function actualizar_riesgo(req, res) {
     bd.query('UPDATE riesgo SET altura = $1, mensaje = $2, indicacion = $3 WHERE nivel = $4 RETURNING *;', [body.altura, body.mensaje, body.indicacion, nivel])
         .then(results => {
             if (results.rowCount > 0) { // Si se actualizó el registro
-                console.log('PUT /riesgo/' + nivel + ' HTTPS/1.1 200 OK');
+                console.log('PUT /api/riesgo/' + nivel + ' HTTPS/1.1 200 OK');
                 json.mensaje = "El riesgo se ha actualizado exitosamente";
                 json.riesgo = results.rows;
                 res.status(200).send(json);
             } else {
-                console.log('PUT /riesgo/' + nivel + ' HTTPS/1.1 400 Bad Request');
+                console.log('PUT /api/riesgo/' + nivel + ' HTTPS/1.1 400 Bad Request');
                 json.error = true;
                 json.mensaje = "Hubo un problema al actualizar el riesgo";
                 res.status(400).send(json);
             }
         })
         .catch(error => {
-            console.log('PUT /riesgo/' + nivel + ' HTTPS/1.1 500 Internal Server Error');
+            console.log('PUT /api/riesgo/' + nivel + ' HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)
@@ -102,19 +102,19 @@ function eliminar_riesgo(req, res) {
     bd.query('DELETE FROM riesgo WHERE nivel = $1 RETURNING *;', [nivel])
         .then(results => {
             if (results.rowCount > 0) { // Si se eliminó el registro
-                console.log('DELETE /riesgo/' + nivel + ' HTTPS/1.1 200 OK');
+                console.log('DELETE /api/riesgo/' + nivel + ' HTTPS/1.1 200 OK');
                 json.mensaje = "El riesgo se ha eliminado exitosamente";
                 json.riesgo = results.rows;
                 res.status(200).send(json);
             } else {
-                console.log('DELETE /riesgo/' + nivel + ' HTTPS/1.1 400 Bad Request');
+                console.log('DELETE /api/riesgo/' + nivel + ' HTTPS/1.1 400 Bad Request');
                 json.error = true;
                 json.mensaje = "Hubo un problema al eliminar el riesgo";
                 res.status(400).send(json);
             }
         })
         .catch(error => {
-            console.log('DELETE /riesgo/' + nivel + ' HTTPS/1.1 500 Internal Server Error');
+            console.log('DELETE /api/riesgo/' + nivel + ' HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json);

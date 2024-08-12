@@ -17,18 +17,18 @@ function consultar_xbee(req, res) {
     bd.query(consulta_sql)
         .then(results => {
             if (results.rowCount > 0) { // Si hay registros
-                console.log('GET /xbee HTTPS/1.1 200 OK');
+                console.log('GET /api/xbee HTTPS/1.1 200 OK');
                 json.mensaje = "Consulta exitosa";
                 json.xbee = results.rows; // Se crea la clave "xbee" en el JSON Response y se asigna el valor de los registros obtenidos
                 res.status(200).send(json); // Se envía el JSON Response al cliente con un código 200 (OK)
             } else {
-                console.log('GET /xbee HTTPS/1.1 200 OK');
+                console.log('GET /api/xbee HTTPS/1.1 200 OK');
                 json.mensaje = "No se encontraron registros de XBee";
                 res.status(200).send(json);
             }
         })
         .catch(error => {
-            console.log('GET /xbee HTTPS/1.1 500 Internal Server Error');
+            console.log('GET /api/xbee HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json); // Se envía el JSON Response al cliente con un código 500 (Internal Server Error)
@@ -48,19 +48,19 @@ function insertar_xbee(req, res) {
                 bd.query('INSERT INTO xbee(nombre, latitud, longitud, fecha_registro) VALUES($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *;', [body.nombre, body.latitud, body.longitud])
                     .then(results => {
                         if (results.rowCount > 0) { // Si se afectó al menos un registro
-                            console.log('POST /xbee HTTPS/1.1 201 Created');
+                            console.log('POST /api/xbee HTTPS/1.1 201 Created');
                             json.mensaje = "El XBee se ha insertado exitosamente";
                             json.xbee = results.rows;
                             res.status(201).send(json); // Se envía el JSON Response al cliente con un código 201 (Created)
                         } else {
-                            console.log('POST /xbee HTTPS/1.1 400 Bad Request');
+                            console.log('POST /api/xbee HTTPS/1.1 400 Bad Request');
                             json.error = true;
                             json.mensaje = "Hubo un problema al insertar el XBee";
                             res.status(400).send(json); // Se envía el JSON Response al cliente con un código 400 (Bad Request)
                         }
                     })
                     .catch(error => {
-                        console.log('POST /xbee HTTPS/1.1 500 Internal Server Error');
+                        console.log('POST /api/xbee HTTPS/1.1 500 Internal Server Error');
                         json.error = true;
                         json.mensaje = "Hubo un problema en el servidor";
                         res.status(500).send(json);
@@ -70,19 +70,19 @@ function insertar_xbee(req, res) {
                 bd.query('UPDATE xbee SET latitud = $1, longitud = $2, fecha_actualizacion = CURRENT_TIMESTAMP WHERE id_xbee = $3 RETURNING *;', [body.latitud, body.longitud, id_xbee])
                     .then(results => {
                         if (results.rowCount > 0) { // Si se afectó al menos un registro
-                            console.log('PUT /xbee HTTPS/1.1 200 OK');
+                            console.log('PUT /api/xbee HTTPS/1.1 200 OK');
                             json.mensaje = "El XBee se ha actualizado exitosamente";
                             json.xbee = results.rows;
                             res.status(200).send(json);
                         } else {
-                            console.log('PUT /xbee HTTPS/1.1 400 Bad Request');
+                            console.log('PUT /api/xbee HTTPS/1.1 400 Bad Request');
                             json.error = true;
                             json.mensaje = "Hubo un problema al actualizar el XBee";
                             res.status(400).send(json);
                         }
                     })
                     .catch(error => {
-                        console.log('PUT /xbee HTTPS/1.1 500 Internal Server Error');
+                        console.log('PUT /api/xbee HTTPS/1.1 500 Internal Server Error');
                         json.error = true;
                         json.mensaje = "Hubo un problema en el servidor";
                         res.status(500).send(json);
@@ -90,7 +90,7 @@ function insertar_xbee(req, res) {
             }
         })
         .catch(error => {
-            console.log('POST /xbee HTTPS/1.1 500 Internal Server Error');
+            console.log('POST /api/xbee HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un problema en el servidor";
             res.status(500).send(json);
@@ -106,19 +106,19 @@ function eliminar_xbee(req, res) {
     bd.query('DELETE FROM xbee WHERE id_xbee = $1 RETURNING *;', [id_xbee])
         .then(results => {
             if (results.rowCount > 0) { // Si se afectó al menos un registro
-                console.log('DELETE /xbee/' + id_xbee + ' HTTPS/1.1 200 OK');
+                console.log('DELETE /api/xbee/' + id_xbee + ' HTTPS/1.1 200 OK');
                 json.mensaje = "El XBee se ha eliminado exitosamente";
                 json.xbee = results.rows;
                 res.status(200).send(json);
             } else {
-                console.log('DELETE /xbee/' + id_xbee + ' HTTPS/1.1 400 Bad Request');
+                console.log('DELETE /api/xbee/' + id_xbee + ' HTTPS/1.1 400 Bad Request');
                 json.error = true;
                 json.mensaje = "Hubo un problema al eliminar el XBee";
                 res.status(400).send(json);
             }
         })
         .catch(error => {
-            console.log('DELETE /xbee/' + id_xbee + ' HTTPS/1.1 500 Internal Server Error');
+            console.log('DELETE /api/xbee/' + id_xbee + ' HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un problema en el servidor";
             res.status(500).send(json);
