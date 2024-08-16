@@ -7,12 +7,12 @@ import express, { static as expressStatic } from 'express'; // Se llama al módu
 import pkg from 'body-parser'; // Se llama al módulo para el manejo de datos en formato JSON
 import { join, dirname } from 'path'; // Se llama a las funciones join y dirname de la biblioteca path
 import { fileURLToPath } from 'url'; // Se llama a la función fileURLToPath de la biblioteca url
-import rutas_web from './web/routes/index.js'; // Se llama al módulo de las rutas de la vista index
+import rutas_web from './public/routes/index.js'; // Se llama al módulo de las rutas de la vista index
 import rutas_api from './api/routes/index.js'; // Se llama al módulo de las rutas de la API
 
 //* <------------------- Configuración general ------------------->
 
-let app = express(); // Se crea una instancia de la aplicación Express
+const app = express(); // Se crea una instancia de la aplicación Express
 const { urlencoded, json } = pkg; // Se obtienen las funciones urlencoded y json de la biblioteca body-parser
 const __filename = fileURLToPath(import.meta.url); // Se obtiene la ruta del archivo actual
 const __dirname = dirname(__filename); // Se obtiene el directorio del archivo actual
@@ -29,9 +29,7 @@ app.use((req, res, next) => { // Se configuran las cabeceras HTTP para permitir 
 
 //* <------------------- Configuración web ------------------->
 
-app.set('view engine', 'ejs'); // Se configura el motor de plantillas para la vista index
-app.set('views', join(__dirname, 'web', 'views')); // Se configura la ruta de las vistas
-app.use(expressStatic(join(__dirname, 'web', 'public'), { redirect: false })); // Se configura la ruta de los archivos estáticos
+app.use(expressStatic(join(__dirname, 'public'))); // Se configura la ruta de los archivos estáticos
 
 //* <------------------- Rutas ------------------->
 

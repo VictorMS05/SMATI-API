@@ -18,19 +18,19 @@ function consultar_nivel(req, res) {
             consulta_sql = 'SELECT x.nombre, n.nivel, r.altura, r.mensaje, r.indicacion FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee INNER JOIN riesgo AS r ON n.nivel = r.nivel WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'3 seconds\' ORDER BY n.fecha DESC LIMIT 1;';
             break;
         case 'tiempo_real':
-            consulta_sql = 'SELECT x.nombre, TO_CHAR(n.fecha AT TIME ZONE \'America/Mexico_City\', \'HH24:MI:SS\') AS hora, n.nivel, r.altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee INNER JOIN riesgo AS r ON n.nivel = r.nivel WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'121 seconds\' ORDER BY n.fecha DESC LIMIT 60;';
+            consulta_sql = 'SELECT x.nombre, TO_CHAR(n.fecha AT TIME ZONE \'America/Mexico_City\', \'HH24:MI:SS\') AS hora, n.nivel, n.nivel * 30 AS altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee INNER JOIN riesgo AS r ON n.nivel = r.nivel WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'124 seconds\' ORDER BY n.fecha DESC LIMIT 60;';
             break;
         case '24_horas':
-            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'hour\', n.fecha AT TIME ZONE \'America/Mexico_City\'), \'HH24:MI\') AS hora, ROUND(AVG(n.nivel), 1) AS promedio_nivel, CONCAT(ROUND(AVG(n.nivel)*30, 2), \' cm\') AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = 1 AND n.fecha >= NOW() - INTERVAL \'24 hours\' GROUP BY x.nombre, hora ORDER BY hora DESC LIMIT 24;';
+            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'hour\', n.fecha AT TIME ZONE \'America/Mexico_City\'), \'HH24:MI\') AS hora, ROUND(AVG(n.nivel), 1) AS promedio_nivel, ROUND(AVG(n.nivel) * 30, 2) AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'24 hours\' GROUP BY x.nombre, hora ORDER BY hora DESC LIMIT 24;';
             break;
         case '7_dias':
-            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'day\', n.fecha), \'DD/MM/YYYY\') AS dia, ROUND(AVG(n.nivel), 1) AS promedio_nivel, CONCAT(ROUND(AVG(n.nivel)*30, 2), \' cm\') AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'7 days\' GROUP BY x.nombre, dia ORDER BY dia DESC LIMIT 7;';
+            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'day\', n.fecha), \'DD/MM/YYYY\') AS dia, ROUND(AVG(n.nivel), 1) AS promedio_nivel, ROUND(AVG(n.nivel) * 30, 2) AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'7 days\' GROUP BY x.nombre, dia ORDER BY dia DESC LIMIT 7;';
             break;
-        case '30 dias':
-            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'day\', n.fecha), \'DD/MM/YYYY\') AS dia, ROUND(AVG(n.nivel), 1) AS promedio_nivel, CONCAT(ROUND(AVG(n.nivel)*30, 2), \' cm\') AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'30 days\' GROUP BY x.nombre, dia ORDER BY dia DESC LIMIT 30;';
+        case '30_dias':
+            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'day\', n.fecha), \'DD/MM/YYYY\') AS dia, ROUND(AVG(n.nivel), 1) AS promedio_nivel, ROUND(AVG(n.nivel) * 30, 2) AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'30 days\' GROUP BY x.nombre, dia ORDER BY dia DESC LIMIT 30;';
             break;
         case '12_meses':
-            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'month\', n.fecha), \'MM/YYYY\') AS mes, ROUND(AVG(n.nivel), 1) AS promedio_nivel, CONCAT(ROUND(AVG(n.nivel)*30, 2), \' cm\') AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'12 months\' GROUP BY x.nombre, mes ORDER BY mes DESC LIMIT 12;';
+            consulta_sql = 'SELECT x.nombre, TO_CHAR(DATE_TRUNC(\'month\', n.fecha), \'MM/YYYY\') AS mes, ROUND(AVG(n.nivel), 1) AS promedio_nivel, ROUND(AVG(n.nivel) * 30, 2) AS promedio_altura FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee WHERE n.id_xbee = $1 AND n.fecha >= NOW() - INTERVAL \'12 months\' GROUP BY x.nombre, mes ORDER BY mes DESC LIMIT 12;';
             break;
         default:
             consulta_sql = 'SELECT x.nombre, n.fecha, n.nivel, r.altura, r.mensaje, r.indicacion FROM nivel AS n INNER JOIN xbee AS x ON n.id_xbee = x.id_xbee INNER JOIN riesgo AS r ON n.nivel = r.nivel WHERE n.id_xbee = $1';
@@ -52,7 +52,7 @@ function consultar_nivel(req, res) {
             }
         })
         .catch(error => {
-            console.log('GET /api/nivel/' + id + ' HTTPS/1.1 500 Internal Server Error');
+            console.log('GET /api/nivel/' + id + parametro_consulta + ' HTTPS/1.1 500 Internal Server Error');
             json.error = true;
             json.mensaje = "Hubo un error en el servidor";
             res.status(500).send(json); // Se envía el JSON respuesta al cliente con un código 500 (Internal Server Error)

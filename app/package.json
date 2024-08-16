@@ -1,6 +1,6 @@
 {
   "name": "smati",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Sistema de Monitoreo de Alerta Temprana de Inundaciones",
   "main": "index.js",
   "type": "module",

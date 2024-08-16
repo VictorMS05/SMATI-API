@@ -17,7 +17,7 @@ server.listen(puerto, () => { //se inicia el servidor
     console.log('SMATI | API');
     console.log('-------------------------');
     console.log('Host Information\n');
-    console.log('Started at https://%s:%s', host, puerto);
+    console.log('Started at http://%s:%s', host, puerto);
     console.log('-------------------------');
     console.log('API Requests\n');
 });

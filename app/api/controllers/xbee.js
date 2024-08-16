@@ -11,8 +11,9 @@ function consultar_xbee(req, res) {
     let consulta_sql = 'SELECT * FROM xbee;'; // Se crea una variable para almacenar la consulta SQL
     let parametro_consulta = ''; // Se crea una variable para almacenar el parámetro de la consulta
     let json = new json_response(); // Se crea un objeto de la clase JSON Response
-    if (req.query.id) { // Si el cliente envía un parámetro de consulta id
-        consulta_sql = 'SELECT * FROM xbee WHERE id_xbee = ' + req.query.id + ';'; // Se modifica la consulta SQL para obtener un registro específico
+    id = req.query.id; 
+    if (id) { // Si el cliente envía un parámetro de consulta id
+        consulta_sql = 'SELECT * FROM xbee WHERE id_xbee = ' + id + ';'; // Se modifica la consulta SQL para obtener un registro específico
         parametro_consulta = '?id=' + req.query.id; // Se asigna el parámetro de consulta
     }
     // Se realiza una consulta a la base de datos para obtener todos los registros de la tabla xbee
