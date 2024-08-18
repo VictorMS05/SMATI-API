@@ -42,7 +42,17 @@ function consultar_nivel(req, res) {
             if (results.rowCount > 0) { // Si hay registros
                 console.log('GET /api/nivel/' + id + parametro_consulta + ' HTTPS/1.1 200 OK');
                 json.mensaje = "Consulta exitosa";
-                json.nivel = results.rows; // Se crea la clave "nivel" en el JSON Response y se asigna el valor de los registros obtenidos
+                if (periodo_de_tiempo == '24_horas' || periodo_de_tiempo == '7_dias' || periodo_de_tiempo == '30_dias' || periodo_de_tiempo == '12_meses') {
+                json.nivel = results.rows.map(row => {
+                    return {
+                        ...row,
+                        promedio_nivel: parseFloat(row.promedio_nivel),
+                        promedio_altura: parseFloat(row.promedio_altura)
+                    };
+                }); // Se crea la clave "nivel" en el JSON Response y se asigna el valor de los registros obtenidos
+                } else {
+                    json.nivel = results.rows;
+                }
                 res.status(200).send(json); // Se envía el JSON Response al cliente con un código 200 (OK)
             } else {
                 console.log('GET /api/nivel/' + id + ' HTTPS/1.1 200 OK');

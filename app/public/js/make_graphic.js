@@ -3,6 +3,8 @@ let graph_section_2 = null; // Variable para almacenar el gráfico
 let array_time = [];
 let array_heights = [];
 let interval = null;
+let time_label = 'Hora'; // Etiqueta del eje X
+let height_label = 'Altura (cm)'; // Etiqueta del eje Y
 // const array_buttons = Array.from(document.getElementsByClassName('filter_button'));
 // const background_color_button = '';
 
@@ -61,22 +63,32 @@ function handle_json_response(json_response, period_of_time) {
     case 'tiempo_real':
       array_time = json_response.nivel.map(item => item.hora);
       array_heights = json_response.nivel.map(item => item.altura);
+      time_label = 'Hora';
+      height_label = 'Altura (cm)';
       break;
     case '24_horas':
       array_time = json_response.nivel.map(item => item.hora);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
+      time_label = 'Hora';
+      height_label = 'Promedio altura (cm)';
       break;
     case '7_dias':
       array_time = json_response.nivel.map(item => item.dia);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
+      time_label = 'Día';
+      height_label = 'Promedio altura (cm)';
       break;
     case '30_dias':
       array_time = json_response.nivel.map(item => item.dia);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
+      time_label = 'Día';
+      height_label = 'Promedio altura (cm)';
       break;
     case '12_meses':
       array_time = json_response.nivel.map(item => item.mes);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
+      time_label = 'Mes';
+      height_label = 'Promedio altura (cm)';
   }
 }
 
@@ -88,21 +100,37 @@ function make_graph(graph_id, graph_section) {
       data: {
         labels: array_time, // Etiquetas del eje X
         datasets: [{
-          label: 'Altura (cm)',
-          data: array_heights, // Datos del eje Y
           backgroundColor: '#0094d380',
           borderColor: '#0094d3',
-          borderWidth: 1
+          borderWidth: 1,
+          data: array_heights, // Datos del eje Y
+          fill: true, // Relleno del gráfico
+          label: height_label, // Etiqueta de la gráfica
+          pointRadius: 15, // Tamaño de los puntos
+          pointHoverRadius: 5, // Tamaño de los puntos al pasar el cursor
+          pointHoverBackgroundColor: '#0094d3', // Color de los puntos al pasar el cursor
+          pointHoverBorderColor: '#0094d3', // Color del borde de los puntos al pasar el cursor
+          pointBackgroundColor: '#0000', // Color de los puntos
+          pointBorderColor: '#0000', // Color del borde de los puntos
+          tension: 0.5, // Curvatura de las líneas
         }]
       },
       options: {
         responsive: true, // Gráfico responsivo
         scales: {
           x: {
-            reverse: true // Eje X invertido
+            reverse: true, // Eje X invertido
+            title: {
+              display: true,
+              text: time_label
+            }
           },
           y: {
-            beginAtZero: true // Eje Y comienza en 0
+            beginAtZero: true, // Eje Y comienza en 0
+            title: {
+              display: true,
+              text: height_label
+            }
           }
         }
       }
@@ -110,6 +138,9 @@ function make_graph(graph_id, graph_section) {
   } else { // Si ya existe una gráfica, se actualiza
     graph_section.data.labels = array_time;
     graph_section.data.datasets[0].data = array_heights;
+    graph_section.data.datasets[0].label = height_label;
+    graph_section.options.scales.x.title.text = time_label;
+    graph_section.options.scales.y.title.text = height_label;
     graph_section.update();
   }
   return graph_section;
