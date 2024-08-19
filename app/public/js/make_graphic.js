@@ -112,7 +112,7 @@ function make_graph(graph_id, graph_section) {
           pointHoverBorderColor: '#0094d3', // Color del borde de los puntos al pasar el cursor
           pointBackgroundColor: '#0000', // Color de los puntos
           pointBorderColor: '#0000', // Color del borde de los puntos
-          tension: 0.5, // Curvatura de las líneas
+          tension: 0.4, // Curvatura de las líneas
         }]
       },
       options: {
