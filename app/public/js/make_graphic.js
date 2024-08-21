@@ -131,7 +131,6 @@ function make_graph(graph_id, graph_section) {
             max: 150,
             ticks: {
                 stepSize: 30
-                // maxTicksLimit: 5, // Limita el número de etiquetas en el eje Y
             },
             title: {
               display: true,
