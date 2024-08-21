@@ -39,7 +39,6 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 90vh;
 }
 
 /*? <---------- Warning ----------> */
@@ -55,7 +54,8 @@ main {
 #filter_section {
     align-items: center;
     display: flex;
-    height: 25%;
+    flex-wrap: wrap;
+    height: 20vh;
     justify-content: space-evenly;
     width: 100vw;
 }
@@ -76,7 +76,7 @@ main {
 #graphics_section {
     align-items: center;
     display: flex;
-    height: 75%;
+    height: 60vh;
     gap: 5vw;
     justify-content: space-between;
     width: 90vw;

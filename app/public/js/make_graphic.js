@@ -70,25 +70,25 @@ function handle_json_response(json_response, period_of_time) {
       array_time = json_response.nivel.map(item => item.hora);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
       time_label = 'Hora';
-      height_label = 'Promedio altura (cm)';
+      height_label = 'Altura promedio (cm)';
       break;
     case '7_dias':
       array_time = json_response.nivel.map(item => item.dia);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
       time_label = 'Día';
-      height_label = 'Promedio altura (cm)';
+      height_label = 'Altura promedio (cm)';
       break;
     case '30_dias':
       array_time = json_response.nivel.map(item => item.dia);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
       time_label = 'Día';
-      height_label = 'Promedio altura (cm)';
+      height_label = 'Altura promedio (cm)';
       break;
     case '12_meses':
       array_time = json_response.nivel.map(item => item.mes);
       array_heights = json_response.nivel.map(item => item.promedio_altura);
       time_label = 'Mes';
-      height_label = 'Promedio altura (cm)';
+      height_label = 'Altura promedio (cm)';
   }
 }
 
@@ -127,11 +127,20 @@ function make_graph(graph_id, graph_section) {
           },
           y: {
             beginAtZero: true, // Eje Y comienza en 0
+            min: 0,
+            max: 150,
+            ticks: {
+                stepSize: 30
+                // maxTicksLimit: 5, // Limita el número de etiquetas en el eje Y
+            },
             title: {
               display: true,
               text: height_label
             }
           }
+        },
+        onHover: (event, chartElement) => {
+          event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
         }
       }
     });
