@@ -1,5 +1,7 @@
 let graph_section_1 = null; // Variable para almacenar el gráfico
-let graph_section_2 = null; // Variable para almacenar el gráfico
+let graph_section_2 = null;
+let graph_section_3 = null;
+let graph_section_4 = null;
 let array_time = [];
 let array_heights = [];
 let interval = null;
@@ -10,17 +12,37 @@ let height_label = 'Altura (cm)'; // Etiqueta del eje Y
 
 function generate_graphs_of_sections(period_of_time) {
   // activate_button(period_of_time);
+  // * <------------------------- GRAPH 1 -------------------------->
   fetch('/api/nivel/1?periodo_de_tiempo=' + period_of_time)
     .then(response => response.json())
     .then(data => {
       handle_json_response(data, period_of_time);
       graph_section_1 = make_graph('graph_1', graph_section_1);
+      console.log("Karen");
+      // * <------------------------- GRAPH 2 -------------------------->
       return fetch('/api/nivel/2?periodo_de_tiempo=' + period_of_time);
     })
     .then(response => response.json())
     .then(data => {
       handle_json_response(data, period_of_time);
       graph_section_2 = make_graph('graph_2', graph_section_2);
+      console.log("Karla");
+      // * <------------------------- GRAPH 3 -------------------------->
+      return fetch('/api/nivel/3?periodo_de_tiempo=' + period_of_time);
+    })
+    .then(response => response.json())
+    .then(data => {
+      handle_json_response(data, period_of_time);
+      graph_section_3 = make_graph('graph_3', graph_section_3);
+      console.log("Gina");
+      // * <------------------------- GRAPH 4 -------------------------->
+      return fetch('/api/nivel/4?periodo_de_tiempo=' + period_of_time);
+    })
+    .then(response => response.json())
+    .then(data => {
+      handle_json_response(data, period_of_time);
+      graph_section_4 = make_graph('graph_4', graph_section_4);
+      console.log("Jorge");
       if (period_of_time === 'tiempo_real') {
         if (!interval) {
           interval = setInterval(() => generate_graphs_of_sections('tiempo_real'), 2000);
@@ -29,6 +51,7 @@ function generate_graphs_of_sections(period_of_time) {
         clearInterval(interval);
         interval = null;
       }
+      console.log("Fer");
     })
     .catch(error => console.error('Error al obtener los datos:', error));
 }

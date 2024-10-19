@@ -17,9 +17,9 @@ body {
     padding: 0;
 }
 
-/** <------------------------- Nav -------------------------> */
+/** <------------------------- Header -------------------------> */
 
-nav {
+header {
     align-items: center;
     background-color: #111;
     color: #eee;
@@ -27,10 +27,12 @@ nav {
     justify-content: center;
     height: 10vh;
     padding: 2.5vh 5vw;
+    position: fixed;
     text-align: center;
+    width: 90vw;
 }
 
-nav img {
+header img {
     height: 90%;
 }
 
@@ -45,10 +47,11 @@ nav ul {
 /** <------------------------- Main -------------------------> */
 
 main {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    padding-top: 15vh;
 }
 
 /*? <---------- Warning ----------> */
@@ -86,8 +89,10 @@ main {
 #graphics_section {
     align-items: center;
     display: flex;
-    height: 60vh;
+    flex-wrap: wrap;
+    /* height: 60vh; */
     gap: 5vw;
+    padding: 5vh 0;
     justify-content: space-between;
     width: 90vw;
 }
