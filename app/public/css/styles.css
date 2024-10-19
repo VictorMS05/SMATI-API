@@ -1,8 +1,18 @@
+@font-face {
+    font-family: 'Intro';
+    src: url('../assets/fonts/Intro.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Arabic Regular';
+    src: url('../assets/fonts/Montserrat-Arabic\ Regular\ 400.otf') format('opentype');
+}
+
 /** <------------------------- General -------------------------> */
 
 body {
     background-color: #eee;
-    font-family: Intro;
+    font-family: "Intro", sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -66,7 +76,7 @@ main {
     border-radius: 25px;
     color: #eee;
     cursor: pointer;
-    font-family: Montserrat-Arabic;
+    font-family: "Montserrat-Arabic Regular", sans-serif;
     font-size: 0.9rem;
     height: 10vh;
     padding: 1vw;
@@ -89,9 +99,6 @@ main {
     justify-content: center;
     font-size: 1.5rem;
     width: 42.5vw;
-}
-
-.graphic_container canvas {
 }
 
 /** <------------------------- Footer -------------------------> */
